@@ -1,8 +1,5 @@
 .mainNav {
-  margin: 0;
-  padding: 0;
-  top: 0;
-  position: fixed;
+  position: sticky;
   width: 100%;
   border-bottom: 5px solid gray;
 }
@@ -24,4 +21,9 @@
 
 .helper {
   margin: 50px;
+}
+
+
+.mainNav a.active {
+  border-bottom: 2px solid black;
 }
