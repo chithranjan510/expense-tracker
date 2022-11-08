@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import classes from './Login.module.css';
 
@@ -7,6 +8,7 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
+  const navigate = useNavigate();
 
   const accountHandler = () => {
     setHaveAccount((preState) => {
@@ -47,8 +49,13 @@ const Login = () => {
       });
 
       if (res.ok) {
-        // const data = await res.json();
+        const data = await res.json();
         console.log('User has logged-In');
+        localStorage.setItem('idToken', data.idToken)
+        setHaveAccount(true);
+        emailRef.current.value = '';
+        passwordRef.current.value = '';
+        navigate('/home');
       } else {
         const data = await res.json();
         throw (data.error);
@@ -71,9 +78,10 @@ const Login = () => {
         <button type='submit'>
           {haveAccount ? 'Login' : 'Create Account'}
         </button>
+        {haveAccount ? <Link to='/'>Forgot Password</Link> : ''}
       </form>
       <div className={classes.login} onClick={accountHandler}>
-        {haveAccount ? 'Create a new account' : 'Have an account? Login'}
+        {haveAccount ? `Don't have an account? Sign Up` : `Have an account? Sign In`}
       </div>
     </div>
   );
