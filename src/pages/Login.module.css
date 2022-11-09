@@ -27,6 +27,11 @@
     border-radius: 5px;
 }
 
+
+.form p {
+  cursor: pointer;
+}
+
 .login {
   box-sizing: border-box;
   width: 400px;
@@ -36,3 +41,6 @@
   cursor: pointer;
 }
 
+.login {
+  text-align: center;
+}

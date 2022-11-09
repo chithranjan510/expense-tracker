@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavLink, useNavigate} from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import classes from './MainNavigation.module.css';
 import loginContext from '../store/login-context';
@@ -11,7 +11,7 @@ const MainNavigation = () => {
   const logoutHandler = () => {
     loginCtx.logout();
     navigate('/login');
-  }
+  };
 
   return (
     <div className={classes.mainNav}>
