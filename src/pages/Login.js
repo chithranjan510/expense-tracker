@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import classes from './Login.module.css';
 import loginContext from '../store/login-context';
@@ -10,7 +10,6 @@ const Login = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const loginCtx = useContext(loginContext);
-  const navigate = useNavigate();
 
   const accountHandler = () => {
     setHaveAccount((preState) => {
@@ -52,13 +51,9 @@ const Login = () => {
 
       if (res.ok) {
         const data = await res.json();
-        console.log('User has logged-In');
         localStorage.setItem('idToken', data.idToken);
         setHaveAccount(true);
-        emailRef.current.value = '';
-        passwordRef.current.value = '';
         loginCtx.login();
-        navigate('/profile');
       } else {
         const data = await res.json();
         throw data.error;
@@ -68,7 +63,21 @@ const Login = () => {
     }
   };
 
-
+  if(loginCtx.isLoggedIn) {
+    return (
+      <div className={classes.mainProfile}>
+        <span className={classes.welcome}>
+          Welcome to Expense Tracker...!!!
+        </span>
+        <span className={classes.profile}>
+          <span>Your profile is incomplete.</span>
+          <Link to='/profile' >
+            <b> Complete now</b>
+          </Link>
+        </span>
+      </div>
+    );
+  }
 
   return (
       <div className={classes.mainDiv}>
