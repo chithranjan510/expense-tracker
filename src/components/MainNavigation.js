@@ -1,9 +1,17 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { NavLink, useNavigate} from 'react-router-dom';
 
 import classes from './MainNavigation.module.css';
+import loginContext from '../store/login-context';
 
 const MainNavigation = () => {
+  const loginCtx = useContext(loginContext);
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    loginCtx.logout();
+    navigate('/login');
+  }
 
   return (
     <div className={classes.mainNav}>
@@ -52,6 +60,11 @@ const MainNavigation = () => {
           </li>
         </ul>
       </nav>
+      {loginCtx.isLoggedIn && (
+        <div className={classes.button}>
+          <button onClick={logoutHandler}>Logout</button>
+        </div>
+      )}
     </div>
   );
 };
