@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import classes from './Expenses.module.css';
 import ExpenseItems from '../components/ExpenseItems';
@@ -10,21 +10,74 @@ const Expenses = () => {
   const typeRef = useRef();
   const descriptionRef = useRef();
 
-  const addExpenseHandler = (event) => {
-    event.preventDefault();
-    setExpenseList((preState) => {
-      const updatedList = [
-        ...preState,
-        {
-          amount: amountRef.current.value,
-          type: typeRef.current.value,
-          description: descriptionRef.current.value,
-        },
-      ];
+  const email = JSON.parse(localStorage.getItem('idToken')).email;
+  const emailUrl = email.replace(/[@.]/g, '');
+  // console.log(emailUrl);
 
-      return updatedList;
-    });
+  const addExpenseHandler = async (event) => {
+    event.preventDefault();
+
+    try {
+      const res = await fetch(
+        `https://expense-tracker-e8647-default-rtdb.firebaseio.com/${emailUrl}expenses.json`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            amount: amountRef.current.value,
+            type: typeRef.current.value,
+            description: descriptionRef.current.value,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const data = await res.json();
+      if (res.ok) {
+        setExpenseList((preState) => {
+          const updatedList = [
+            ...preState,
+            {
+              amount: amountRef.current.value,
+              type: typeRef.current.value,
+              description: descriptionRef.current.value,
+            },
+          ];
+          return updatedList;
+        });
+      } else {
+        throw data.error;
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   };
+
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        const res = await fetch(
+          `https://expense-tracker-e8647-default-rtdb.firebaseio.com/${emailUrl}expenses.json`
+        );
+
+        const data = await res.json();
+        if (res.ok) {
+          const retrievedData = [];
+
+          for (let item in data) {
+            retrievedData.push(data[item]);
+          }
+          setExpenseList(retrievedData);
+        } else {
+          throw data.error;
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    getItems();
+  }, [emailUrl]);
 
   const newExpenseList = expenseList.map((item) => (
     <ExpenseItems item={item} key={Math.random().toString()} />
