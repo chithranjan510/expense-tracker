@@ -1,9 +1,11 @@
 import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import classes from './ForgotPassword.module.css';
 
-const ForgotPassword = (props) => {
+const ForgotPassword = () => {
   const email = useRef();
+  const navigate = useNavigate();
 
   const resetPasswordHandler = async (event) => {
 
@@ -26,7 +28,7 @@ const ForgotPassword = (props) => {
 
       const data = await res.json();
       if (res.ok) {
-        props.changedPassword();
+        navigate('/login');
       } else {
         throw data.error;
       }
