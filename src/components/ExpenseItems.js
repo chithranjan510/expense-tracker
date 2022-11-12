@@ -4,14 +4,15 @@ import classes from './ExpenseItems.module.css';
 
 const ExpenseItems = (props) => {
 
-  const removeFromDatabase = async(id) => {
+  const editHandler = async() => {
     try{
-      const res = await fetch(`https://expense-tracker-e8647-default-rtdb.firebaseio.com/${props.emailUrl}expenses/${id}.json`,{
+      const res = await fetch(`https://expense-tracker-e8647-default-rtdb.firebaseio.com/${props.emailUrl}expenses/${props.item.id}.json`,{
         method: 'DELETE'
       })
 
       if(res.ok) {
-        console.log('deleted successfully');
+        // console.log('deleted successfully');
+        props.edit(props.item)
       }
     }
     catch(err) {
@@ -19,14 +20,20 @@ const ExpenseItems = (props) => {
     }
   }
 
-  const editHandler = () => {
-    removeFromDatabase(props.item.id);
-    props.edit(props.item)
-  }
+  const deleteHandler = async() => {
+    try{
+      const res = await fetch(`https://expense-tracker-e8647-default-rtdb.firebaseio.com/${props.emailUrl}expenses/${props.item.id}.json`,{
+        method: 'DELETE'
+      })
 
-  const deleteHandler = () => {
-    removeFromDatabase(props.item.id);
-    props.deleted(props.item.id)
+      if(res.ok) {
+        // console.log('deleted successfully');
+        props.deleted(props.item.id)
+      }
+    }
+    catch(err) {
+      console.log(err.message)
+    }
   }
 
   return (
