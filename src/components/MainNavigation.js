@@ -9,12 +9,7 @@ const MainNavigation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
-  const expenseList = useSelector((state) => state.expense.expenses);
 
-  let expenseAmount = 0;
-  expenseList.forEach((expense) => {
-    expenseAmount += +expense.amount;
-  });
 
   const logoutHandler = () => {
     dispatch(loginActions.logout());
@@ -69,7 +64,6 @@ const MainNavigation = () => {
         </ul>
       </nav>
       <div className={classes.button}>
-        {expenseAmount > 10000 && <button>Activate Premium</button>}
         {isLoggedIn && <button onClick={logoutHandler}>Logout</button>}
       </div>
     </div>
