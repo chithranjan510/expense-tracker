@@ -56,7 +56,7 @@ const Login = () => {
         const data = await res.json();
         localStorage.setItem('idToken', JSON.stringify(data));
         setHaveAccount(true);
-        dispatch(loginActions.login());
+        dispatch(loginActions.login(data.email));
       } else {
         const data = await res.json();
         throw data.error;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import './App.css';
 import MainNavigation from './components/MainNavigation';
@@ -14,7 +14,7 @@ import ForgotPassword from './components/ForgotPassword';
 
 function App() {
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
-  const themeMode = useSelector(state => state.theme.theme);
+  const themeMode = useSelector((state) => state.theme.theme);
 
   return (
     <div className={themeMode === 'dark' ? 'dark' : ''}>
@@ -25,9 +25,7 @@ function App() {
 
         <Route
           path='/expenses'
-          element={
-            isLoggedIn ? <Expenses /> : <Navigate to='/login' replace />
-          }
+          element={isLoggedIn ? <Expenses /> : <Navigate to='/login' replace />}
         />
 
         <Route path='/about' element={<About />} />
